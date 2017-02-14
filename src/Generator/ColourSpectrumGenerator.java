@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Alequin on 16/12/2016.
+ * updated 14/02/17
  */
 
 public class ColourSpectrumGenerator {
@@ -43,66 +44,53 @@ public class ColourSpectrumGenerator {
         double blue = RED.getBlue();
 
         int index = 0;
-        int currentPoint = 0;
 
         double leftOverIncrement = 0;
 
-        while (currentPoint == 0){
+        while (green <= YELLOW.getGreen()){
             colours.add(index++, new RGBColour(red, green, blue));
             green += incrementValue;
-            if(green >= YELLOW.getGreen()){
-                green = YELLOW.getGreen();
-                leftOverIncrement = (green - YELLOW.getGreen());
-                currentPoint = 1;
-            }
         }
+        
+        leftOverIncrement = (green - YELLOW.getGreen());
+        green = YELLOW.getGreen();
 
-        while (currentPoint == 1){
+        while (red >= GREEN.getRed()){
             colours.add(index++, new RGBColour(red, green, blue));
             red -= incrementValue;
-            if(red <= GREEN.getRed()){
-                red = GREEN.getRed();
-                leftOverIncrement = (-red);
-                currentPoint = 2;
-            }
         }
+        
+        leftOverIncrement = (-red);
+        red = GREEN.getRed();
 
-        while (currentPoint == 2){
+        while (blue <= CYAN.getBlue()){
             colours.add(index++, new RGBColour(red, green, blue));
             blue += incrementValue;
-            if(blue >= CYAN.getBlue()){
-                blue = CYAN.getBlue();
-                leftOverIncrement = (blue - CYAN.getBlue());
-                currentPoint = 3;
-            }
+            
         }
+        
+        leftOverIncrement = (blue - CYAN.getBlue());
+        blue = CYAN.getBlue();
 
-        while (currentPoint == 3){
+        while (green >= BLUE.getGreen()){
             colours.add(index++, new RGBColour(red, green, blue));
             green -= incrementValue;
-            if(green <= BLUE.getGreen()){
-                green = BLUE.getGreen();
-                leftOverIncrement = (-green);
-                currentPoint = 4;
-            }
         }
 
-        while (currentPoint == 4){
+        leftOverIncrement = (-green);
+        green = BLUE.getGreen();
+        
+        while (red <= MAGENTA.getRed()){
             colours.add(index++, new RGBColour(red, green, blue));
             red += incrementValue;
-            if(red >= MAGENTA.getRed()){
-                red = MAGENTA.getRed();
-                leftOverIncrement = red - MAGENTA.getRed();
-                currentPoint = 5;
-            }
         }
-
-        while (currentPoint == 5){
+        
+        leftOverIncrement = red - MAGENTA.getRed();
+        red = MAGENTA.getRed();
+                
+        while (blue >= RED.getBlue()){
             colours.add(index++, new RGBColour(red, green, blue));
             blue -= incrementValue;
-            if(blue <= RED.getBlue()){
-                currentPoint = 6;
-            }
         }
 
         return colours;
