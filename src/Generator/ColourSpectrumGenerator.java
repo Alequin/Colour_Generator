@@ -36,9 +36,12 @@ public class ColourSpectrumGenerator {
      */
     public static ArrayList<RGBColour> generateColoursArrayList(int numberOfColours){
 
-        final ArrayList<RGBColour> colours = new ArrayList<>();;
-        final double incrementValue = (double)1592 / (double)numberOfColours;
-
+        final ArrayList<RGBColour> colours = new ArrayList<>();
+        
+        final double incrementValue = (double)calculateStepCount() / (double)numberOfColours;
+        System.out.println(incrementValue + " | " + calculateStepCount());
+        
+        
         double red = RED.getRed();
         double green = RED.getGreen();
         double blue = RED.getBlue();
@@ -95,4 +98,19 @@ public class ColourSpectrumGenerator {
 
         return colours;
     };
+    
+    private static int calculateStepCount(){
+
+        return getDifferenceBetween(RED.getGreen(), YELLOW.getGreen()) +
+                getDifferenceBetween(YELLOW.getRed(), GREEN.getRed()) +
+                getDifferenceBetween(GREEN.getBlue(), CYAN.getBlue()) +
+                getDifferenceBetween(CYAN.getGreen(), BLUE.getGreen()) +
+                getDifferenceBetween(BLUE.getRed(), MAGENTA.getRed()) +
+                getDifferenceBetween(MAGENTA.getBlue(), RED.getBlue());
+    }
+    
+    private static int getDifferenceBetween(int value1, int value2){
+        
+        return Math.max(value1, value2) - Math.min(value1, value2);
+    }
 }

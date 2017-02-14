@@ -8,7 +8,7 @@ public class ColourSpectrumGeneratorTester {
 
     public static void main(String[] args) {
         
-        RGBColour[] colours = ColourSpectrumGenerator.generateColoursArray(10);
+        RGBColour[] colours = ColourSpectrumGenerator.generateColoursArray(1);
         
         for(int a=1; a<colours.length+1; a++){
             printColour(a, colours[a-1]);
