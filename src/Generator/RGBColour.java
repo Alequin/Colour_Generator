@@ -6,23 +6,73 @@ package Generator;
 
 public class RGBColour {
 
-    private final double RED, GREEN, BLUE;
+    private int red;
+    private int green;
+    private int blue;
+    
+    private final int MAX_COLOUR_VALUE = 255;
+    private final int MIN_COLOUR_VALUE = 0;
 
-    public RGBColour(double RED, double GREEN, double BLUE) {
-        this.RED = RED;
-        this.GREEN = GREEN;
-        this.BLUE = BLUE;
+    public RGBColour(int red, int green, int blue) {
+        this.red = red;
+        this.green = green;
+        this.blue = blue;
+    }
+    
+    public RGBColour(double red, double green, double blue) {
+        this((int)red, (int)green, (int)blue);
     }
 
+    public void setRed(int red) {
+        if(red < MIN_COLOUR_VALUE || red > MAX_COLOUR_VALUE){
+            throw new IllegalArgumentException(
+                    String.format("Value cannot be less than %s or greater than %s", 
+                            Integer.toString(MIN_COLOUR_VALUE), Integer.toString(MAX_COLOUR_VALUE)
+                    )
+            );
+        }
+        this.red = red;
+    }
+
+    public void setGreen(int green) {
+        if(green < MIN_COLOUR_VALUE || green > MAX_COLOUR_VALUE){
+            throw new IllegalArgumentException(
+                    String.format("Value cannot be less than %s or greater than %s", 
+                            Integer.toString(MIN_COLOUR_VALUE), Integer.toString(MAX_COLOUR_VALUE)
+                    )
+            );
+        }
+        this.green = green;
+    }
+
+    public void setBlue(int blue) {
+        if(blue < MIN_COLOUR_VALUE || blue > MAX_COLOUR_VALUE){
+            throw new IllegalArgumentException(
+                    String.format("Value cannot be less than %s or greater than %s", 
+                            Integer.toString(MIN_COLOUR_VALUE), Integer.toString(MAX_COLOUR_VALUE)
+                    )
+            );
+        }
+        this.blue = blue;
+    }
+    
     public int getRed() {
-        return (int)RED;
+        return red;
     }
 
     public int getGreen() {
-        return (int)GREEN;
+        return green;
     }
 
     public int getBlue() {
-        return (int)BLUE;
+        return blue;
+    }
+    
+    private int minColourValue(){
+        return (int)Math.min(red, (Math.max(green, blue)) );
+    }
+    
+    private int maxColourValue(){
+        return (int)Math.max(red, (Math.max(green, blue)) );
     }
 }
