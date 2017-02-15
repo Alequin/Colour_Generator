@@ -10,10 +10,10 @@ public class ColourSpectrumGeneratorTester {
     public static void main(String[] args) {
         
         //testRGBValues();
-        testColourCount();
+        //testColourCount();
         //testoffBy();
         //testoffByDirection();
-        //testAllColours();
+        testAllColours();
     }
     
     public static void printColour(int index, RGBColour colour){
