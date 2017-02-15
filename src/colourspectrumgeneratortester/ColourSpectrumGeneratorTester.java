@@ -8,8 +8,8 @@ public class ColourSpectrumGeneratorTester {
 
     public static void main(String[] args) {
         
-        //testRGBValues();
-        testColourCount();
+        testRGBValues();
+        //testColourCount();
         //testoffBy();
         //testoffByDirection();
     }
@@ -19,7 +19,7 @@ public class ColourSpectrumGeneratorTester {
     }
     
     public static void testRGBValues(){
-        RGBColour[] colours = ColourSpectrumGenerator.generateColours(6);
+        RGBColour[] colours = ColourSpectrumGenerator.generateColours(3, new RGBColour(-1,120,205));
         
         for(int a=1; a<colours.length+1; a++){
             printColour(a, colours[a-1]);
