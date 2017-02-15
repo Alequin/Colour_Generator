@@ -29,18 +29,15 @@ public class ColourSpectrumGeneratorTester {
     
     public static void testColourCount(){
         int value = 1;
-        for(int a=value; a<value+200_000; a++){
-            int red = randomNum();
-            int green = randomNum();
-            int blue = randomNum();
+        final Random r = new Random();
+        for(int a=value; a<value+500_000; a++){
+            int red = r.nextInt(255);
+            int green = r.nextInt(255);
+            int blue = r.nextInt(255);
             System.out.println(red + " | " + green + " | " + blue);
-            RGBColour[] colours = ColourSpectrumGenerator.generateColours(a, new RGBColour(red,green,blue));
+            RGBColour[] colours = ColourSpectrumGenerator.generateColours(r.nextInt(2000)+1, new RGBColour(red,green,blue));
             System.out.println(a + ") " + colours.length);
         }
-    }
-    
-    public static int randomNum(){
-        return new Random().nextInt(255);
     }
     
     public static void testoffBy(){

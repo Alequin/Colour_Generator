@@ -11,41 +11,55 @@ import java.util.ArrayList;
 
 public class ColourSpectrumGenerator {
 
-    private static int i = 1;
+    private RGBColour[] colours;
+    private int coloursGenerated;
+    private final int totalColours;
     
-    private static RGBColour[] colours;
-    private static int colourCount;
+    private final RGBColour baseColour;
+    private RGBColour RED;
+    private RGBColour YELLOW;
+    private RGBColour GREEN;
+    private RGBColour CYAN;
+    private RGBColour BLUE;
+    private RGBColour MAGENTA;
     
-    private static RGBColour RED = new RGBColour(255,0,0);
-    private static RGBColour YELLOW = new RGBColour(255,255,0);
-    private static RGBColour GREEN = new RGBColour(0,255,0);
-    private static RGBColour CYAN = new RGBColour(0,255,255);
-    private static RGBColour BLUE = new RGBColour(0,0,255);
-    private static RGBColour MAGENTA = new RGBColour(255,0,255);
-    
+    private ColourSpectrumGenerator(int numberOfColours, RGBColour baseColour){
+        
+        this.totalColours = numberOfColours;
+        this.baseColour = baseColour;
+        
+        setPrimaryColours();
+        colours = new RGBColour[totalColours];
+        coloursGenerated = 0;
+        
+    }
+            
     public static RGBColour[] generateColours(int numberOfColours){
         return generateColours(numberOfColours, new RGBColour(255,0,0));
+    }
+            
+    public static RGBColour[] generateColours(int numberOfColours, RGBColour baseColour){
+        
+        if(numberOfColours <=0){
+            throw new IllegalArgumentException("Number of colours must be greater than 0");
+        }
+        
+        final ColourSpectrumGenerator generator = new ColourSpectrumGenerator(numberOfColours, baseColour);
+        
+        if(baseColour.getRed() == baseColour.getGreen() && baseColour.getRed() == baseColour.getBlue()){
+            //If all colour values are equal the produced array will contain duplicates of the same colour  
+            return generator.produceArrayOfSimilarColours();
+        }else{
+            return generator.produceColours();  
+        }
     }
     
     /**
      * Generates an array of colours across the spectrum
      */
-    public static RGBColour[] generateColours(int numberOfColours, RGBColour baseColour){
+    private RGBColour[] produceColours(){
 
-        if(numberOfColours <=0){
-            throw new IllegalArgumentException("Number of colours must be greater than 0");
-        }
-        
-        prepareGenerator(numberOfColours, baseColour);
-        
-        if(baseColour.getRed() == baseColour.getGreen() && baseColour.getRed() == baseColour.getBlue()){
-            for(int a=0; a<colours.length; a++){
-                colours[a] = baseColour.clone();
-            }
-            return colours;
-        }
-        
-        final double incrementValue = calculateStepCount() / (double)numberOfColours;
+        final double incrementValue = calculateStepCount() / (double)totalColours;
         
         double red = RED.getRed();
         double green = RED.getGreen();
@@ -55,12 +69,7 @@ public class ColourSpectrumGenerator {
         
         double leftOverIncrement = 0;
         
-        i = 1;
         PRIMARY_LOOP:do{
-            if(i > 1){
-                System.exit(0);
-            }
-            i++;
             while (green < YELLOW.getGreen()){
                 green += incrementValue;
                 if(green <= YELLOW.getGreen()){
@@ -180,16 +189,16 @@ public class ColourSpectrumGenerator {
                     }
                 }
             }  
-        }while(colourCount < colours.length);
+        }while(coloursGenerated < colours.length);
          
         return colours;
     };
     
-    private static void prepareGenerator(int numberOfColours, RGBColour baseColour){
-        
-        setPrimaryColours(baseColour);
-        colours = new RGBColour[numberOfColours];
-        colourCount = 0;
+    private RGBColour[] produceArrayOfSimilarColours(){
+        for(int a=0; a<colours.length; a++){
+                colours[a] = baseColour.clone();
+            }
+            return colours;
     }
     
     /**
@@ -198,14 +207,14 @@ public class ColourSpectrumGenerator {
      * @param colourToAdd
      * @return 
      */
-    private static boolean addColour(RGBColour colourToAdd){
+    private boolean addColour(RGBColour colourToAdd){
         
-        colours[colourCount++] = colourToAdd;
-        return colourCount >= colours.length;
+        colours[coloursGenerated++] = colourToAdd;
+        return coloursGenerated >= colours.length;
         
     }
     
-    private static void setPrimaryColours(RGBColour baseColour){
+    private void setPrimaryColours(){
         
         final int min = baseColour.getMinColourValue();
         final int max = baseColour.getMaxColourValue();
@@ -218,17 +227,13 @@ public class ColourSpectrumGenerator {
         MAGENTA = new RGBColour(max, min, max);
     }
     
-    private static int calculateStepCount(){
+    private int calculateStepCount(){
 
-        return getDifferenceBetween(RED.getGreen(), YELLOW.getGreen()) +
-                getDifferenceBetween(YELLOW.getRed(), GREEN.getRed()) +
-                getDifferenceBetween(GREEN.getBlue(), CYAN.getBlue()) +
-                getDifferenceBetween(CYAN.getGreen(), BLUE.getGreen()) +
-                getDifferenceBetween(BLUE.getRed(), MAGENTA.getRed()) +
-                getDifferenceBetween(MAGENTA.getBlue(), RED.getBlue());
-    }
-    
-    private static int getDifferenceBetween(int value1, int value2){
-        return Math.max(value1, value2) - Math.min(value1, value2);
+        return Math.abs(RED.getGreen() - YELLOW.getGreen()) +
+                Math.abs(YELLOW.getRed() - GREEN.getRed()) +
+                Math.abs(GREEN.getBlue() - CYAN.getBlue()) +
+                Math.abs(CYAN.getGreen() - BLUE.getGreen()) +
+                Math.abs(BLUE.getRed() - MAGENTA.getRed()) +
+                Math.abs(MAGENTA.getBlue() - RED.getBlue());
     }
 }
