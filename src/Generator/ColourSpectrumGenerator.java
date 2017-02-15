@@ -44,14 +44,14 @@ public class ColourSpectrumGenerator {
         double green = RED.getGreen();
         double blue = RED.getBlue();
 
-        int index = 0;
-
+        final int minMaxRange = RED.getMaxColourValue() - RED.getMinColourValue();
+        
         double leftOverIncrement = 0;
 
-        while (green <= YELLOW.getGreen()){
+        while (green < YELLOW.getGreen()){
             green += incrementValue;
             if(green <= YELLOW.getGreen()){
-                colours.add(index++, new RGBColour(red, green, blue));
+                colours.add(new RGBColour(red, green, blue));
             }
         }
         
@@ -59,13 +59,15 @@ public class ColourSpectrumGenerator {
         green = YELLOW.getGreen();
         if(leftOverIncrement > 0){
             red -= leftOverIncrement;
-            colours.add(index++, new RGBColour(red, green, blue));
+            if(leftOverIncrement <= minMaxRange){
+                colours.add(new RGBColour(red, green, blue));
+            }
         }
 
-        while (red >= GREEN.getRed()){
+        while (red > GREEN.getRed()){
             red -= incrementValue;
             if(red >= GREEN.getRed()){
-                colours.add(index++, new RGBColour(red, green, blue));
+                colours.add(new RGBColour(red, green, blue));
             }
         }
         
@@ -73,27 +75,31 @@ public class ColourSpectrumGenerator {
         red = GREEN.getRed();
         if(leftOverIncrement > 0){
             blue += leftOverIncrement;
-            colours.add(index++, new RGBColour(red, green, blue));
+            if(leftOverIncrement <= minMaxRange){
+                colours.add(new RGBColour(red, green, blue));
+            }
         }
 
-        while (blue <= CYAN.getBlue()){
+        while (blue < CYAN.getBlue()){
             blue += incrementValue;
             if(blue <= CYAN.getBlue()){
-               colours.add(index++, new RGBColour(red, green, blue)); 
+               colours.add(new RGBColour(red, green, blue)); 
             }
         }
         
         leftOverIncrement = (blue - CYAN.getBlue());
         blue = CYAN.getBlue();
         if(leftOverIncrement > 0){
-            green += leftOverIncrement;
-            colours.add(index++, new RGBColour(red, green, blue));
+            green -= leftOverIncrement;
+            if(leftOverIncrement <= minMaxRange){
+                colours.add(new RGBColour(red, green, blue));
+            }
         }
 
-        while (green >= BLUE.getGreen()){
+        while (green > BLUE.getGreen()){
             green -= incrementValue;
             if(green >= BLUE.getGreen()){
-                colours.add(index++, new RGBColour(red, green, blue));
+                colours.add(new RGBColour(red, green, blue));
             }
         }
 
@@ -101,13 +107,15 @@ public class ColourSpectrumGenerator {
         green = BLUE.getGreen();
         if(leftOverIncrement > 0){
             red += leftOverIncrement;
-            colours.add(index++, new RGBColour(red, green, blue));
+            if(leftOverIncrement <= minMaxRange){
+                colours.add(new RGBColour(red, green, blue));
+            }
         }
         
-        while (red <= MAGENTA.getRed()){
+        while (red < MAGENTA.getRed()){
             red += incrementValue;
             if(red <= MAGENTA.getRed()){
-                colours.add(index++, new RGBColour(red, green, blue));
+                colours.add(new RGBColour(red, green, blue));
             }
         }
         
@@ -115,16 +123,29 @@ public class ColourSpectrumGenerator {
         red = MAGENTA.getRed();
         if(leftOverIncrement > 0){
             blue -= leftOverIncrement;
-            colours.add(index++, new RGBColour(red, green, blue));
+            if(leftOverIncrement <= minMaxRange){
+                colours.add(new RGBColour(red, green, blue));
+            }
         }        
         
-        while (blue >= RED.getBlue()){
+        while (blue > RED.getBlue()){
             blue -= incrementValue;
             if(blue >= RED.getBlue()){
-                colours.add(index++, new RGBColour(red, green, blue));
+                colours.add(new RGBColour(red, green, blue));
             }
         }
-
+        
+        if(colours.size() < numberOfColours){
+            leftOverIncrement = Math.abs(blue);
+            blue = MAGENTA.getRed();
+            if(leftOverIncrement > 0){
+                green -= leftOverIncrement;
+                if(leftOverIncrement <= minMaxRange){
+                    colours.add(new RGBColour(red, green, blue));
+                }
+            }    
+        }
+         
         return colours;
     };
     

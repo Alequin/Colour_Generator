@@ -68,11 +68,11 @@ public class RGBColour {
         return blue;
     }
     
-    private int minColourValue(){
+    public int getMinColourValue(){
         return (int)Math.min(red, (Math.max(green, blue)) );
     }
     
-    private int maxColourValue(){
+    public int getMaxColourValue(){
         return (int)Math.max(red, (Math.max(green, blue)) );
     }
 }
