@@ -11,6 +11,8 @@ import java.util.ArrayList;
 
 public class ColourSpectrumGenerator {
 
+    private static int i = 1;
+    
     private static RGBColour[] colours;
     private static int colourCount;
     
@@ -36,8 +38,14 @@ public class ColourSpectrumGenerator {
         
         prepareGenerator(numberOfColours, baseColour);
         
-        double totalSteps = calculateStepCount();
-        final double incrementValue = totalSteps / (double)numberOfColours;
+        if(baseColour.getRed() == baseColour.getGreen() && baseColour.getRed() == baseColour.getBlue()){
+            for(int a=0; a<colours.length; a++){
+                colours[a] = baseColour.clone();
+            }
+            return colours;
+        }
+        
+        final double incrementValue = calculateStepCount() / (double)numberOfColours;
         
         double red = RED.getRed();
         double green = RED.getGreen();
@@ -47,7 +55,12 @@ public class ColourSpectrumGenerator {
         
         double leftOverIncrement = 0;
         
+        i = 1;
         PRIMARY_LOOP:do{
+            if(i > 1){
+                System.exit(0);
+            }
+            i++;
             while (green < YELLOW.getGreen()){
                 green += incrementValue;
                 if(green <= YELLOW.getGreen()){
@@ -176,19 +189,6 @@ public class ColourSpectrumGenerator {
         
         setPrimaryColours(baseColour);
         colours = new RGBColour[numberOfColours];
-        colourCount = 0;
-    }
-    
-    private static void resetGenerator(){
-        
-        RED = null;
-        YELLOW = null;
-        GREEN = null;
-        CYAN = null;
-        BLUE = null;
-        MAGENTA = null;
-        
-        colours = null;
         colourCount = 0;
     }
     

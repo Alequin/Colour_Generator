@@ -73,10 +73,14 @@ public class RGBColour {
     }
     
     public int getMinColourValue(){
-        return (int)Math.min(red, (Math.max(green, blue)) );
+        return (int)Math.min(red, (Math.min(green, blue)) );
     }
     
     public int getMaxColourValue(){
         return (int)Math.max(red, (Math.max(green, blue)) );
+    }
+    
+    public RGBColour clone(){
+        return new RGBColour(this.red, this.green, this.blue); 
     }
 }
