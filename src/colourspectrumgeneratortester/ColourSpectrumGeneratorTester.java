@@ -13,6 +13,7 @@ public class ColourSpectrumGeneratorTester {
         testColourCount();
         //testoffBy();
         //testoffByDirection();
+        //testAllColours();
     }
     
     public static void printColour(int index, RGBColour colour){
@@ -30,13 +31,14 @@ public class ColourSpectrumGeneratorTester {
     public static void testColourCount(){
         int value = 1;
         final Random r = new Random();
-        for(int a=value; a<value+500_000; a++){
+        for(int a=value; a<value+50000; a++){
             int red = r.nextInt(255);
             int green = r.nextInt(255);
             int blue = r.nextInt(255);
-            System.out.println(red + " | " + green + " | " + blue);
-            RGBColour[] colours = ColourSpectrumGenerator.generateColours(r.nextInt(2000)+1, new RGBColour(red,green,blue));
-            System.out.println(a + ") " + colours.length);
+            RGBColour[] colours = ColourSpectrumGenerator.generateColours(a, new RGBColour(red,green,blue));
+            if(colours.length != a){
+                printColour(a, new RGBColour(red,green,blue));
+            }
         }
     }
     
@@ -46,9 +48,6 @@ public class ColourSpectrumGeneratorTester {
         for(int a=value; a<value+2000; a++){
                 RGBColour[] colours = ColourSpectrumGenerator.generateColours(a);
                 offByValue = Math.max(offByValue, Math.abs(colours.length - a));
-                if(a % 10_000 == 0){
-                    System.out.println(a);
-                }
         }
         System.out.println(offByValue);
     }
@@ -73,6 +72,31 @@ public class ColourSpectrumGeneratorTester {
         
         System.out.println("----------------------------------------------------------");
         System.out.println(negative + " | " + positive);
+    }
+    
+    public static void testAllColours(){
+        
+        int red = 0;
+        int green = 0;
+        int blue = 0;
+        
+        while(red < 255){
+            
+            blue++;
+            if(blue > 255){
+                green++;
+                blue = 0;
+                if(green > 255){
+                    red++;
+                    green = 0;
+                }
+            }
+            
+            System.out.println(red + " | " + green + " | " + blue);
+            RGBColour[] colours = ColourSpectrumGenerator.generateColours(1600, new RGBColour(red,green,blue));
+            
+        }
+        
     }
     
     
