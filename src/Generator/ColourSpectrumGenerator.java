@@ -1,12 +1,9 @@
 
 package Generator;
 
-import java.util.ArrayList;
-
-
 /**
  * Created by Alequin on 16/12/2016.
- * updated 14/02/17
+ * updated 17/02/17
  */
 
 public class ColourSpectrumGenerator {
@@ -68,94 +65,118 @@ public class ColourSpectrumGenerator {
         final int minMaxRange = RED.getMaxColourValue() - RED.getMinColourValue();
         
         double leftOverIncrement = 0;
-        
-        while (green < YELLOW.getGreen()){
-            green += incrementValue;
-            if(green <= YELLOW.getGreen()){
-                addColour(red,green,blue);
-            }
-        }
 
-        leftOverIncrement = (green - YELLOW.getGreen());
-        green = YELLOW.getGreen();
-        if(leftOverIncrement > 0){
-            red -= leftOverIncrement;
-            if(leftOverIncrement <= minMaxRange){
-                addColour(red,green,blue);
+        PRIMARY_LOOP:do {
+            while (green < YELLOW.getGreen()) {
+                green += incrementValue;
+                if (green <= YELLOW.getGreen()) {
+                    if(addColour(red, green, blue)){
+                        break PRIMARY_LOOP;
+                    }
+                }
             }
-        }
 
-        while (red > GREEN.getRed()){
-            red -= incrementValue;
-            if(red >= GREEN.getRed()){
-                addColour(red,green,blue);
+            leftOverIncrement = (green - YELLOW.getGreen());
+            green = YELLOW.getGreen();
+            if (leftOverIncrement > 0) {
+                red -= leftOverIncrement;
+                if (leftOverIncrement <= minMaxRange) {
+                    if(addColour(red, green, blue)){
+                        break PRIMARY_LOOP;
+                    }
+                }
             }
-        }
 
-        leftOverIncrement = GREEN.getRed() - red;
-        red = GREEN.getRed();
-        if(leftOverIncrement > 0){
-            blue += leftOverIncrement;
-            if(leftOverIncrement <= minMaxRange){
-                addColour(red,green,blue);
+            while (red > GREEN.getRed()) {
+                red -= incrementValue;
+                if (red >= GREEN.getRed()) {
+                    if(addColour(red, green, blue)){
+                        break PRIMARY_LOOP;
+                    }
+                }
             }
-        }
 
-        while (blue < CYAN.getBlue()){
-            blue += incrementValue;
-            if(blue <= CYAN.getBlue()){
-               addColour(red,green,blue);
+            leftOverIncrement = GREEN.getRed() - red;
+            red = GREEN.getRed();
+            if (leftOverIncrement > 0) {
+                blue += leftOverIncrement;
+                if (leftOverIncrement <= minMaxRange) {
+                    if(addColour(red, green, blue)){
+                        break PRIMARY_LOOP;
+                    }
+                }
             }
-        }
 
-        leftOverIncrement = (blue - CYAN.getBlue());
-        blue = CYAN.getBlue();
-        if(leftOverIncrement > 0){
-            green -= leftOverIncrement;
-            if(leftOverIncrement <= minMaxRange){
-                addColour(red,green,blue);
+            while (blue < CYAN.getBlue()) {
+                blue += incrementValue;
+                if (blue <= CYAN.getBlue()) {
+                    if(addColour(red, green, blue)){
+                        break PRIMARY_LOOP;
+                    }
+                }
             }
-        }
 
-        while (green > BLUE.getGreen()){
-            green -= incrementValue;
-            if(green >= BLUE.getGreen()){
-                addColour(red,green,blue);
+            leftOverIncrement = (blue - CYAN.getBlue());
+            blue = CYAN.getBlue();
+            if (leftOverIncrement > 0) {
+                green -= leftOverIncrement;
+                if (leftOverIncrement <= minMaxRange) {
+                    if(addColour(red, green, blue)){
+                        break PRIMARY_LOOP;
+                    }
+                }
             }
-        }
 
-        leftOverIncrement = BLUE.getGreen() - green;
-        green = BLUE.getGreen();
-        if(leftOverIncrement > 0){
-            red += leftOverIncrement;
-            if(leftOverIncrement <= minMaxRange){
-                addColour(red,green,blue);
+            while (green > BLUE.getGreen()) {
+                green -= incrementValue;
+                if (green >= BLUE.getGreen()) {
+                    if(addColour(red, green, blue)){
+                        break PRIMARY_LOOP;
+                    }
+                }
             }
-        }
 
-        while (red < MAGENTA.getRed()){
-            red += incrementValue;
-            if(red <= MAGENTA.getRed()){
-                addColour(red,green,blue);
+            leftOverIncrement = BLUE.getGreen() - green;
+            green = BLUE.getGreen();
+            if (leftOverIncrement > 0) {
+                red += leftOverIncrement;
+                if (leftOverIncrement <= minMaxRange) {
+                    if(addColour(red, green, blue)){
+                        break PRIMARY_LOOP;
+                    }
+                }
             }
-        }
 
-        leftOverIncrement = red - MAGENTA.getRed();
-        red = MAGENTA.getRed();
-        if(leftOverIncrement > 0){
-            blue -= leftOverIncrement;
-            if(leftOverIncrement <= minMaxRange){
-                addColour(red,green,blue);
+            while (red < MAGENTA.getRed()) {
+                red += incrementValue;
+                if (red <= MAGENTA.getRed()) {
+                    if(addColour(red, green, blue)){
+                        break PRIMARY_LOOP;
+                    }
+                }
             }
-        }        
 
-        while (blue > RED.getBlue()){
-            blue -= incrementValue;
-            if(blue >= RED.getBlue()){
-                addColour(red,green,blue);
+            leftOverIncrement = red - MAGENTA.getRed();
+            red = MAGENTA.getRed();
+            if (leftOverIncrement > 0) {
+                blue -= leftOverIncrement;
+                if (leftOverIncrement <= minMaxRange) {
+                    if(addColour(red, green, blue)){
+                        break PRIMARY_LOOP;
+                    }
+                }
             }
-        }
-         
+
+            while (blue > RED.getBlue()) {
+                blue -= incrementValue;
+                if (blue >= RED.getBlue()) {
+                    if(addColour(red, green, blue)){
+                        break PRIMARY_LOOP;
+                    }
+                }
+            }
+        }while(coloursGenerated < colours.length);
+
         return colours;
     };
     
@@ -166,8 +187,9 @@ public class ColourSpectrumGenerator {
             return colours;
     }
 
-    private void addColour(double red, double green, double blue){
+    private boolean addColour(double red, double green, double blue){
         colours[coloursGenerated++] = new RGBColour(red, green, blue);
+        return coloursGenerated >= colours.length;
     }
     
     private void setPrimaryColours(){
